@@ -2,6 +2,7 @@
 import streamlit as st
 from snowflake.snowpark.functions import col
 import requests
+import panda as pd_df
 
 # Write directly to the app
 st.title(":cup_with_straw: Customize your Smothie! :cup_with_straw:")
@@ -17,6 +18,10 @@ cnx = st.connection("snowflake")
 session = cnx.session()
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'))
 st.dataframe(data=my_dataframe, use_container_width=True)
+st.stop()
+
+#convert the snowopark dateframe to a panda dataframe so we can use the loc function
+pd_df=my_dataframe.to_panda()
 st.stop()
 
 ingredients_list = st.multiselect(
